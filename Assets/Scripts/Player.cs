@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    
+    [SerializeField]
     private float _speed = 10.5f;
     private int _speedMultiplier = 2;
+    private float _shiftSpeedRate = 15.5f;
+    private float _normalSpeed = 10.5f;
 
     [SerializeField]
     private GameObject _laserPrefab;
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
     private GameObject _rightDamage,_leftDamage;
 
     private AudioSource _laserAudio;
+
     
 
     void Start()
@@ -82,6 +85,7 @@ public class Player : MonoBehaviour
         
         Translate();
         Movement();
+        LeftShiftSpeedThrust();
         FireLaser();
     }
 
@@ -117,6 +121,20 @@ public class Player : MonoBehaviour
 
         transform.Translate(_direction * _speed * Time.deltaTime);
     }
+
+
+    void LeftShiftSpeedThrust()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _speed = _shiftSpeedRate;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        { 
+            _speed = _normalSpeed;
+        }
+    }
+            
 
     void FireLaser()
     {
