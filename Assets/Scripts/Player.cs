@@ -54,11 +54,15 @@ public class Player : MonoBehaviour
 
     // Damage Variable
     [SerializeField]
-    private GameObject _rightDamage,_leftDamage;
+    private GameObject _rightDamage, _leftDamage;
 
     private AudioSource _laserAudio;
 
-    
+    //Sprite Color Variable
+    [SerializeField]
+    private int _shieldMethodCallCount = 0;
+
+
 
     void Start()
     {
@@ -66,23 +70,23 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
-        
+
 
         if (_spawnManager == null)
         {
             Debug.LogError("Null spawn manager.");
         }
 
-        if(_UIManager == null)
+        if (_UIManager == null)
         {
             Debug.LogError("Null UI Manager.");
         }
     }
 
-   
+
     void Update()
     {
-        
+
         Translate();
         Movement();
         LeftShiftSpeedThrust();
@@ -91,7 +95,7 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
-       
+
 
         if (transform.position.x > 9.18f)
         {
@@ -129,12 +133,12 @@ public class Player : MonoBehaviour
         {
             _speed = _shiftSpeedRate;
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift)) 
-        { 
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
             _speed = _normalSpeed;
         }
     }
-            
+
 
     void FireLaser()
     {
@@ -143,21 +147,22 @@ public class Player : MonoBehaviour
             _canfire = Time.time + _fireRate;
             if (_tripleShotActive == true)
             {
-                Instantiate(_tripleShot, transform.position, Quaternion.identity);    
+                Instantiate(_tripleShot, transform.position, Quaternion.identity);
             }
-            else { 
-            Instantiate(_laserPrefab, transform.position + new Vector3(0,0.8f,0), Quaternion.identity);
+            else {
+                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
             }
 
             _laserAudio.Play();
         }
     }
 
-   public void damage()
+    public void damage()
     {
 
-        if(_shieldShotActive == true)
+        if (_shieldShotActive == true)
         {
+            _shieldMethodCallCount = 0;
             _shieldShotActive = false;
             _shieldVisual.SetActive(false);
             return;
@@ -165,13 +170,13 @@ public class Player : MonoBehaviour
         
         _lives--;
 
-        if(_lives == 2)
+        if (_lives == 2)
         {
             _rightDamage.SetActive(true);
             _UIManager.updateImage(2);
         }
 
-        if(_lives == 1)
+        if (_lives == 1)
         {
             _leftDamage.SetActive(true);
             _UIManager.updateImage(1);
@@ -181,7 +186,7 @@ public class Player : MonoBehaviour
         {
             Destroy(this.gameObject);
             _UIManager.updateImage(0);
-           _spawnManager.OnPlayerDeath();
+            _spawnManager.OnPlayerDeath();
         }
     }
 
@@ -193,8 +198,8 @@ public class Player : MonoBehaviour
 
     IEnumerator TripleShotPowerUp()
     {
-        while(_tripleShotActive == true) { 
-        yield return new WaitForSeconds(5.0f);
+        while (_tripleShotActive == true) {
+            yield return new WaitForSeconds(5.0f);
             _tripleShotActive = false;
         }
     }
@@ -209,7 +214,7 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedPowerUp()
     {
-        while(_speedShotActive == true)
+        while (_speedShotActive == true)
         {
             yield return new WaitForSeconds(5.0f);
             _speedShotActive = false;
@@ -217,12 +222,14 @@ public class Player : MonoBehaviour
             _speed /= _speedMultiplier;
         }
     }
-    
+
     public void ShieldPowerUp()
     {
+      
+       _shieldMethodCallCount++;
+        ChangeShieldColor();
         _shieldShotActive = true;
         _shieldVisual.SetActive(true);
-
     }
 
     public void AddScore(int points)
@@ -235,6 +242,25 @@ public class Player : MonoBehaviour
         return _Score;
     }
 
+    void ChangeShieldColor()
+    {
+      
+        float[] alpha = {0, 0.33f, 0.66f, 1.0f }; // I had to put a 0 for the 0 index since the method call starts from 1. The 0 here helps the alpha to begin at 0.33f.
 
-   
+        if (_shieldMethodCallCount < 4) 
+        { 
+            for(int i =0; i<= _shieldMethodCallCount; i++)
+            {
+            _shieldVisual.GetComponent<SpriteRenderer>().color = new Color(1,1,1,alpha[_shieldMethodCallCount]);
+            }
+        }
+        else
+        {
+            _shieldVisual.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+
+        }
+
+    }
+
+
 }
