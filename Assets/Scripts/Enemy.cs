@@ -36,6 +36,11 @@ public class Enemy : MonoBehaviour
 
         _explosionAudio = GetComponent<AudioSource>();
 
+        if(_explosionAudio == null)
+        {
+            Debug.LogError("Empty explosion Audio.");
+        }
+
         }
     void Update()
     {

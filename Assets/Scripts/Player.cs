@@ -62,6 +62,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _shieldMethodCallCount = 0;
 
+    //Laser shot count variable
+    [SerializeField]
+    private int _totalLaserFired = 0;
+    [SerializeField]
+    private GameObject AmmoPrefab;
+    [SerializeField]
+    private Text _noAmmoText;
+    
 
 
     void Start()
@@ -70,7 +78,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
-
+        
 
         if (_spawnManager == null)
         {
@@ -144,18 +152,32 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canfire)
         {
-            _canfire = Time.time + _fireRate;
-            if (_tripleShotActive == true)
+            if (_totalLaserFired < 15)
             {
-                Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                _totalLaserFired++;
+                _canfire = Time.time + _fireRate;
+                if (_tripleShotActive == true)
+                {
+                    Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                }
+                _laserAudio.Play();
             }
-            else {
-                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            else
+            {
+                AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
+                _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
+                _noAmmoText.GetComponent<Text>().enabled = true;                   //Enables the text to true.
+
             }
 
-            _laserAudio.Play();
         }
     }
+
+    
 
     public void damage()
     {

@@ -10,6 +10,7 @@ TagManager:
   - Restart Tag
   - Asteroid
   - RightEngineDamage
+  - Shield
   layers:
   - Default
   - TransparentFX

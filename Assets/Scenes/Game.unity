@@ -146,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5800002
+      value: 4.45
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -723,7 +723,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7900002
+      value: 5.66
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -1083,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.1000001
+      value: 4.97
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -1578,7 +1578,7 @@ GameObject:
   - component: {fileID: 1216642976}
   m_Layer: 0
   m_Name: Shield
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1658,7 +1658,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 333b0196b7a764df5a7768ead9b69dbc, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1895,6 +1895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebccd47116910e84a80d72bb18799a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 10.5
   _laserPrefab: {fileID: 8907528646476307850, guid: 91ff5dd6cc6dd284a9158f12be0625f6,
     type: 3}
   _tripleShot: {fileID: 2676268862034460652, guid: d9748b0263a108b47a943a95309f6406,
@@ -1905,6 +1906,7 @@ MonoBehaviour:
   _Score: 0
   _rightDamage: {fileID: 390825407}
   _leftDamage: {fileID: 48397292}
+  _shieldMethodCallCount: 0
 --- !u!212 &1434397723
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2141,7 +2143,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.05
+      value: 5.92
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -2297,7 +2299,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 3.3699996
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -2372,7 +2374,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.22
+      value: 5.0899997
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
@@ -2452,7 +2454,7 @@ PrefabInstance:
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8800001
+      value: 3.7499998
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}
