@@ -78,31 +78,20 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
-        {
-            
+        {      
             player.damage();
             _TriggerAnimation();
             _explosionAudio.Play();
-
-
         }
 
         if(other.tag == "Laser")
         {
-
             Destroy(other.gameObject);
             player.AddScore(10);
             _TriggerAnimation();
             _explosionAudio.Play();
-
         }
-
-        if(other.tag == "Asteroid")
-        {
-            Destroy(other.gameObject);
-            _explosionAudio.Play();
-
-        }
+        
     }
 
     public void _TriggerAnimation()

@@ -20,7 +20,8 @@ public class SpawnManager : MonoBehaviour
     private bool _stopSpawn = false;
 
 
-    void Start()
+
+    public void powerUpCoroutineStarter()
     {
         StartCoroutine(EnemySpawnRoutine());
         StartCoroutine(PowerupRoutine());
@@ -41,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawn == false)
         {
             Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
-            int powerupId = Random.Range(0, 3);
+            int powerupId = Random.Range(0, 4);
             Instantiate(powerup[powerupId], location, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }

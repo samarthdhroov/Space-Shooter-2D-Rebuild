@@ -69,12 +69,14 @@ public class Player : MonoBehaviour
     private GameObject AmmoPrefab;
     [SerializeField]
     private Text _noAmmoText;
+
+    
     
 
 
     void Start()
     {
-        transform.position = new Vector3(0, -3.89f, 0);
+        transform.position = new Vector3(0, -2.94f, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
@@ -284,5 +286,14 @@ public class Player : MonoBehaviour
 
     }
 
+    // Ammo Code
 
+    public void RefillAmmo()
+    {
+        _totalLaserFired = 0;                                                //resets lase fire to 0.
+        AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 1, 1, 1);   //resets the prefab color to its original.
+        _noAmmoText.GetComponent<Text>().enabled = false;                    // disables no ammo text in UI.
+
+
+    }
 }
