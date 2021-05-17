@@ -293,7 +293,31 @@ public class Player : MonoBehaviour
         _totalLaserFired = 0;                                                //resets lase fire to 0.
         AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 1, 1, 1);   //resets the prefab color to its original.
         _noAmmoText.GetComponent<Text>().enabled = false;                    // disables no ammo text in UI.
+    }
+
+    public void HealthRefill()
+    {
+        if(_lives < 3) 
+        { 
+            _lives++;
 
 
+            switch (_lives) { 
+
+                case 2:
+                 _rightDamage.SetActive(false);
+                 _UIManager.updateImage(2);
+                  break;
+
+                case 3:
+                    _leftDamage.SetActive(false);
+                    _UIManager.updateImage(3);
+                    break;
+            }          
+        }
+        else
+        {
+            _lives = 3; 
+        }   
     }
 }

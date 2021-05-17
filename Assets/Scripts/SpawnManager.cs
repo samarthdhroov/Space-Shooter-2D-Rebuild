@@ -13,6 +13,10 @@ public class SpawnManager : MonoBehaviour
     private GameObject _tripleShotPrefab;
     [SerializeField]
     private GameObject _speedShotPrefab;
+    [SerializeField]
+    private GameObject _powerupPrefab;
+    [SerializeField]
+    private GameObject _healthPowerUp;
 
     [SerializeField]
     private GameObject[] powerup;
@@ -42,7 +46,7 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawn == false)
         {
             Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
-            int powerupId = Random.Range(0, 4);
+            int powerupId = Random.Range(0, 5);
             Instantiate(powerup[powerupId], location, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
