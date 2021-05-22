@@ -11,6 +11,8 @@ TagManager:
   - Asteroid
   - RightEngineDamage
   - Shield
+  - Enemy Laser
+  - GreenLaser
   layers:
   - Default
   - TransparentFX

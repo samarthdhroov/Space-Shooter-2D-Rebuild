@@ -406,8 +406,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -227217421
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a45d21c30e0154a9ca1a5d6fb2bf3cfa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1648,6 +1648,8 @@ MonoBehaviour:
     type: 3}
   _healthPowerUp: {fileID: 7114716273131996138, guid: 40525c54e9fb30f43b5bd92621b7cbe5,
     type: 3}
+  _greenWiperPower: {fileID: 178639373252444590, guid: 388f2763a8bd4014aa1938f88231c9ee,
+    type: 3}
   powerup:
   - {fileID: 4899919157185051562, guid: 48f8d08ae364ec54f861aac7e24778bc, type: 3}
   - {fileID: 6151506278989034449, guid: c541b83e1ed958940970a1af6dbff252, type: 3}
@@ -1843,6 +1845,8 @@ MonoBehaviour:
   _totalLaserFired: 0
   AmmoPrefab: {fileID: 881505690}
   _noAmmoText: {fileID: 634000121}
+  _secondLaserShot: {fileID: 9207702618241443450, guid: 46c56e8902a7d6b43838f9ba27cda5b2,
+    type: 3}
 --- !u!212 &1434397723
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2044,7 +2048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434397721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.53, y: -2.94, z: 0}
+  m_LocalPosition: {x: 0, y: -2.77, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1216642979}
@@ -2146,6 +2150,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Asteroid
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055669588054069525, guid: 623a1bbf40fdd344eb484aff5704d103,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7154104131946122025, guid: 623a1bbf40fdd344eb484aff5704d103,
         type: 3}

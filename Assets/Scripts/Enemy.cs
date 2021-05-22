@@ -57,10 +57,7 @@ public class Enemy : MonoBehaviour
             {
                 enemyLaserChild[i].SetEnemyLaser();
             }
-            
-
         }
-
 
     }
 
@@ -92,6 +89,14 @@ public class Enemy : MonoBehaviour
             _explosionAudio.Play();
         }
         
+        if(other.tag == "GreenLaser")
+        {
+           
+            player.AddScore(10); 
+            _TriggerAnimation();
+            _explosionAudio.Play();
+
+        }
     }
 
     public void _TriggerAnimation()

@@ -56,6 +56,9 @@ public class Powerup : MonoBehaviour
                 case 4:
                     player.HealthRefill();
                     break;
+                case 5:
+                    player.GreenWiper();
+                    break;
                 default:
                     Debug.Log("Default Value");
                     break;

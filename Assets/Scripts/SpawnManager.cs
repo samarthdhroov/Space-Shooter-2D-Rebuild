@@ -17,6 +17,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject _powerupPrefab;
     [SerializeField]
     private GameObject _healthPowerUp;
+    [SerializeField]
+    private GameObject _greenWiperPower;
 
     [SerializeField]
     private GameObject[] powerup;
@@ -29,7 +31,9 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(EnemySpawnRoutine());
         StartCoroutine(PowerupRoutine());
+        StartCoroutine(SecondaryPowerUp());
     }
+
     IEnumerator EnemySpawnRoutine()
     {
         while (_stopSpawn == false)
@@ -47,10 +51,22 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
             int powerupId = Random.Range(0, 5);
-            Instantiate(powerup[powerupId], location, Quaternion.identity);
+            Instantiate(powerup[powerupId], location, Quaternion.identity); 
             yield return new WaitForSeconds(Random.Range(3, 8));
+            
         }
 
+    }
+
+    IEnumerator SecondaryPowerUp()
+    {
+        while(_stopSpawn == false)
+        {
+            
+            Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
+            Instantiate(_greenWiperPower, location, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(30.0f,35.0f));
+        }
     }
     public void OnPlayerDeath()
     {

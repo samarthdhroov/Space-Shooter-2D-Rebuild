@@ -63,5 +63,10 @@ public class Laser : MonoBehaviour
             collision.GetComponent<Player>().damage();
             Destroy(this.gameObject);
         }
+
+        if(collision.tag == "GreenLaser")
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

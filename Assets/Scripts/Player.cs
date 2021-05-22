@@ -70,8 +70,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Text _noAmmoText;
 
-    
-    
+    //secondary player shot variable
+    [SerializeField]
+    private GameObject _secondLaserShot;
+
 
 
     void Start()
@@ -80,7 +82,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
-        
+       
 
         if (_spawnManager == null)
         {
@@ -101,6 +103,7 @@ public class Player : MonoBehaviour
         Movement();
         LeftShiftSpeedThrust();
         FireLaser();
+       
     }
 
     void Movement()
@@ -299,7 +302,7 @@ public class Player : MonoBehaviour
     {
         if(_lives < 3) 
         { 
-            _lives++;
+            _lives++;                                       
 
 
             switch (_lives) { 
@@ -311,6 +314,7 @@ public class Player : MonoBehaviour
 
                 case 3:
                     _leftDamage.SetActive(false);
+                    _rightDamage.SetActive(false);
                     _UIManager.updateImage(3);
                     break;
             }          
@@ -320,4 +324,12 @@ public class Player : MonoBehaviour
             _lives = 3; 
         }   
     }
+
+
+    public void GreenWiper()
+    {
+        Instantiate(_secondLaserShot, transform.position  + new Vector3(0.0f,1.5f,0.0f),Quaternion.AngleAxis(90.0f, Vector3.forward));
+
+    }
+
 }
