@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
     private Text _noAmmoText;
 
     //secondary player shot variable
+    private bool _greenlaserActive = false;
     [SerializeField]
     private GameObject _secondLaserShot;
 
@@ -165,9 +166,15 @@ public class Player : MonoBehaviour
                 {
                     Instantiate(_tripleShot, transform.position, Quaternion.identity);
                 }
+                else if(_greenlaserActive == true)
+                {
+                    Instantiate(_secondLaserShot, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.AngleAxis(90.0f, Vector3.forward));
+                    StartCoroutine(GreenWiperEnable());
+                }
                 else
                 {
                     Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                    
                 }
                 _laserAudio.Play();
             }
@@ -328,8 +335,18 @@ public class Player : MonoBehaviour
 
     public void GreenWiper()
     {
-        Instantiate(_secondLaserShot, transform.position  + new Vector3(0.0f,1.5f,0.0f),Quaternion.AngleAxis(90.0f, Vector3.forward));
+        _greenlaserActive = true; 
+        /*Instantiate(_secondLaserShot, transform.position  + new Vector3(0.0f,1.5f,0.0f),Quaternion.AngleAxis(90.0f, Vector3.forward));*/
 
+    }
+
+    IEnumerator GreenWiperEnable()
+    {
+        while(_greenlaserActive == true)
+        {
+           yield return new WaitForSeconds(5.0f);
+            _greenlaserActive = false;
+        }
     }
 
 }
