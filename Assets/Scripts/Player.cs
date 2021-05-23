@@ -78,6 +78,9 @@ public class Player : MonoBehaviour
     // Thruster HUD variable
     public ThrustSlider _healthBar;
 
+    //Shake Animation variable
+    private Animator _shakeCamera;
+
 
 
     void Start()
@@ -86,6 +89,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
+        _shakeCamera = GameObject.Find("Main Camera").GetComponent<Animator>();
        
 
         if (_spawnManager == null)
@@ -244,6 +248,15 @@ public class Player : MonoBehaviour
             return;
         }
         
+        if (_shakeCamera != null)
+        {
+            _shakeCamera.SetTrigger("EnableShake");
+        }
+        else
+        {
+            Debug.LogError("Empty animator");
+        }
+
         _lives--;
 
         if (_lives == 2)
