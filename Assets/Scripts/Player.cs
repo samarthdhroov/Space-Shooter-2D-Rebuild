@@ -75,6 +75,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _secondLaserShot;
 
+    // Thruster HUD variable
+    public ThrustSlider _healthBar;
+
 
 
     void Start()
@@ -94,6 +97,8 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Null UI Manager.");
         }
+
+        
     }
 
 
@@ -140,16 +145,53 @@ public class Player : MonoBehaviour
         transform.Translate(_direction * _speed * Time.deltaTime);
     }
 
-
+    //Left Shift key mechanis and control for HUD in the following three methods.
     void LeftShiftSpeedThrust()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        float currentSliderValue = _healthBar.slider.value;
+        
+            if (Input.GetKey(KeyCode.LeftShift))
+                {
+                   if (currentSliderValue > 0) 
+                   { 
+                    _speed = _shiftSpeedRate;
+                    changeThrusterHUD();
+                   }
+                   else
+                    { 
+                    _speed = _normalSpeed; 
+                    }
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    _speed = _normalSpeed;
+                     StartCoroutine(updateThrusterHUD());
+                }
+    }
+
+    void changeThrusterHUD()
+    {
+        if(_healthBar == null)
         {
-            _speed = _shiftSpeedRate;
+            Debug.LogError("Empty Healthbar");
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        float newSliderValue = _healthBar.slider.value - 0.05f;
+        _healthBar.ChangeSliderValue(newSliderValue);
+    }
+
+    IEnumerator updateThrusterHUD()
+    {
+       while(_healthBar.slider.value < 15) 
         {
-            _speed = _normalSpeed;
+            if (_healthBar.slider.value < 1)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+        yield return new WaitForSeconds(0.5f);
+        float newSliderValue = _healthBar.slider.value + 0.2f;
+        _healthBar.ChangeSliderValue(newSliderValue);
+        yield return new WaitForSeconds(0.5f);
         }
     }
 
