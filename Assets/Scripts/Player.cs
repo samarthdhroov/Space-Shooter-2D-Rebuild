@@ -207,6 +207,7 @@ public class Player : MonoBehaviour
             if (_totalLaserFired < 15)
             {
                 _totalLaserFired++;
+                _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.
                 _canfire = Time.time + _fireRate;
                 if (_tripleShotActive == true)
                 {
@@ -228,7 +229,7 @@ public class Player : MonoBehaviour
             {
                 AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
                 _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
-                _noAmmoText.GetComponent<Text>().enabled = true;                   //Enables the text to true.
+                _noAmmoText.GetComponent<Text>().text = "No Ammo";                 // Changes the text to No Ammo.
 
             }
 
