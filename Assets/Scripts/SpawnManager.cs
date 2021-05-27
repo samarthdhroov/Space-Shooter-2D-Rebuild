@@ -26,24 +26,58 @@ public class SpawnManager : MonoBehaviour
     private bool _stopSpawn = false;
 
 
-
     public void powerUpCoroutineStarter()
     {
         StartCoroutine(EnemySpawnRoutine());
+        StartCoroutine(LeftAngularEnemySpawnRoutine());
         StartCoroutine(PowerupRoutine());
         StartCoroutine(SecondaryPowerUp());
     }
 
     IEnumerator EnemySpawnRoutine()
     {
+        
         while (_stopSpawn == false)
         {
+           
             Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
             GameObject NewEnemy = Instantiate(_enemyPrefab, location, Quaternion.identity);
             NewEnemy.transform.parent = _enemyContainer.transform;
+            NewEnemy.GetComponent<Enemy>().EnemyType(0);
             yield return new WaitForSeconds(2.0f);
         }
     }
+
+    IEnumerator LeftAngularEnemySpawnRoutine()
+    {
+
+        while (_stopSpawn == false)
+        {
+   
+            Vector3 location = new Vector3(Random.Range(-11.0f, -6.0f), 7.6f, 0);
+            GameObject NewEnemy = Instantiate(_enemyPrefab, location, Quaternion.AngleAxis(45,Vector3.forward));
+            NewEnemy.transform.parent = _enemyContainer.transform;
+            NewEnemy.GetComponent<Enemy>().EnemyType(1);
+            yield return new WaitForSeconds(5.0f);
+  
+        }  
+    }
+
+    /*IEnumerator RightAngularEnemySpawnRoutine()
+    {
+     //To be implemented later since currently the game is becoming too tight to be played with enemies coming from all directions.
+
+        while (_stopSpawn == false)
+        {
+
+            Vector3 location = new Vector3(Random.Range(11.0f, 6.0f), 7.6f, 0);
+            GameObject NewEnemy = Instantiate(_enemyPrefab, location, Quaternion.AngleAxis(-45, Vector3.forward));
+            NewEnemy.transform.parent = _enemyContainer.transform;
+            NewEnemy.GetComponent<Enemy>().EnemyType(1);
+            yield return new WaitForSeconds(5.0f);
+
+        }
+    }*/
 
     IEnumerator PowerupRoutine()
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    
     private float _speed = 5.5f;
     private Player player;
 
@@ -17,59 +18,122 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1.5f;
     [SerializeField]
     private GameObject _enemyLaserPrefab;
+    [SerializeField]
+    private GameObject _enemyAngularPrefab;
 
+    private int _enemyType;
 
     private void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-        if(player == null)
+        if (player == null)
         {
             Debug.LogError("Player componenet is NUll");
         }
 
         _explosion = GetComponent<Animator>();
 
-        if(_explosion == null)
+        if (_explosion == null)
         {
             Debug.LogError("Empty Animator");
         }
 
         _explosionAudio = GetComponent<AudioSource>();
 
-        if(_explosionAudio == null)
+        if (_explosionAudio == null)
         {
             Debug.LogError("Empty explosion Audio.");
         }
 
-        }
-    void Update()
-    {
-        EnemyMovement();
-
-        if(Time.time > _canFire)
-        {
-            _fireRate = Random.Range(3.0f, 8.0f);
-            _canFire = Time.time + _fireRate;
-            GameObject EnemyLaser = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
-            Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
-            
-            for(int i=0; i< enemyLaserChild.Length; i++)
-            {
-                enemyLaserChild[i].SetEnemyLaser();
-            }
-        }
-
     }
 
-    void EnemyMovement()
+
+
+    private void Update()
+    {
+        switch (_enemyType)
+        {
+            case 0:
+                EnemyMovement();
+                break;
+            case 1:
+                AngularEnemyMovement();
+                break;
+        }
+       
+       
+    }
+    public void EnemyType(int value)
+    {
+        _enemyType = value;
+    }
+
+    public void EnemyMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        Debug.Log("Enemy translate called");
 
         if (transform.position.y < -5.3f)
         {
             Destroy(this.gameObject);
-            //transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
+           
         }
+
+    if (Time.time > _canFire)
+    {
+        _fireRate = Random.Range(3.0f, 8.0f);
+        _canFire = Time.time + _fireRate;
+        GameObject EnemyLaser = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
+        Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
+
+        for (int i = 0; i < enemyLaserChild.Length; i++)
+        {
+            enemyLaserChild[i].SetEnemyLaser();
+        }
+    }
+}
+
+    public  void AngularEnemyMovement()
+    {
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        StartCoroutine(ForwardAngleChange());
+
+        if (transform.position.y < -5.3f)
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3.0f, 8.0f);
+            _canFire = Time.time + _fireRate;
+            GameObject EnemyLaser = Instantiate(_enemyAngularPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
+            Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < enemyLaserChild.Length; i++)
+            {
+                enemyLaserChild[i].SetEnemyLaser();
+            }
+            
+        }
+        
+    }
+
+    IEnumerator ForwardAngleChange()
+    {
+             
+            Vector3 newRotationAngles = transform.rotation.eulerAngles;
+            //Debug.Log(newRotationAngles);
+            newRotationAngles.z -= 1;
+            yield return new WaitForSeconds(0.1f);
+            transform.rotation = Quaternion.Euler(newRotationAngles);
+
+            if (transform.position.y >=0 && transform.position.y <=1)
+            {
+            newRotationAngles.z = -45.0f;
+            transform.rotation = Quaternion.Euler(newRotationAngles);
+            }
+              
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -102,7 +166,12 @@ public class Enemy : MonoBehaviour
     public void _TriggerAnimation()
     {
         _explosion.SetTrigger("OnEnemyDeath");
-        _speed = 4.0f;
+        if(_enemyType == 0)
+        {
+            _speed = 4.0f;
+        }
+        else
+        _speed = 0.0f;
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         Destroy(this.gameObject, 1.5f);
 

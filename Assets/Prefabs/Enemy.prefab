@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyLaserPrefab: {fileID: 5335462620196524092, guid: 19f596903519d214dadd7f4395674e64,
     type: 3}
+  _enemyAngularPrefab: {fileID: 1925937015487750215, guid: bb53fd4b37024864c8e7597a71151849,
+    type: 3}
 --- !u!212 &3909098287034566819
 SpriteRenderer:
   m_ObjectHideFlags: 0
