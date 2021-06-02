@@ -9,11 +9,12 @@ public class UI_Manager : MonoBehaviour
     private Player player;
     private int latestScore;
 
+    [SerializeField]
+    private Text _waveText;
+
     //sprites for lives
     [SerializeField]
     private Sprite[] _livesSprites;
-
-   
     private Image _livesImage;
     private Sprite _livesImageTemp;
     
@@ -34,6 +35,7 @@ public class UI_Manager : MonoBehaviour
         _livesImage = GameObject.Find("Canvas").GetComponentInChildren<Image>();
 
         _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
 
         _GameoverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
@@ -88,5 +90,29 @@ public class UI_Manager : MonoBehaviour
         _GameoverText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void showWaveText(int value)
+    {
+        if(_waveText.name == "WaveText")
+        {
+            _waveText.enabled = true;
+            int waveNumber = value + 1;
+            _waveText.text = "Wave" + " " + waveNumber.ToString();
+            _waveText.fontStyle.Equals(FontStyle.Italic);
+            StartCoroutine(disableWaveText());
+        }
+
+    }
+
+    IEnumerator disableWaveText()
+    {
+        yield return new WaitForSeconds(2.0f);
+        _waveText.enabled = false;
+    }
+
+    public void ShowPlayerWinText()
+    {
+        _waveText.text = "You Won this bad looking game";
     }
 }

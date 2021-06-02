@@ -18,18 +18,16 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1.5f;
     [SerializeField]
     private GameObject _enemyLaserPrefab;
-    [SerializeField]
-    private GameObject _enemyAngularPrefab;
 
-    private int _enemyType;
 
     private void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
-        if (player == null)
-        {
-            Debug.LogError("Player componenet is NUll");
-        }
+       
+         player = GameObject.Find("Player").GetComponent<Player>();
+         if (player == null)
+            {
+                Debug.LogError("Player componenet is NUll");
+            }
 
         _explosion = GetComponent<Animator>();
 
@@ -45,33 +43,25 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Empty explosion Audio.");
         }
 
+        transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
+
     }
-
-
 
     private void Update()
     {
-        switch (_enemyType)
-        {
-            case 0:
-                EnemyMovement();
-                break;
-            case 1:
-                AngularEnemyMovement();
-                break;
-        }
-       
-       
+        EnemyMovement();
+
     }
-    public void EnemyType(int value)
+
+    public void setEnemySpeed(float value)
     {
-        _enemyType = value;
+        _speed = value;
     }
 
     public void EnemyMovement()
     {
+     
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        Debug.Log("Enemy translate called");
 
         if (transform.position.y < -5.3f)
         {
@@ -79,7 +69,7 @@ public class Enemy : MonoBehaviour
            
         }
 
-    if (Time.time > _canFire)
+        if (Time.time > _canFire)
     {
         _fireRate = Random.Range(3.0f, 8.0f);
         _canFire = Time.time + _fireRate;
@@ -92,8 +82,8 @@ public class Enemy : MonoBehaviour
         }
     }
 }
-
-    public  void AngularEnemyMovement()
+    
+   /* public  void AngularEnemyMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         StartCoroutine(ForwardAngleChange());
@@ -101,13 +91,14 @@ public class Enemy : MonoBehaviour
         if (transform.position.y < -5.3f)
         {
             Destroy(this.gameObject);
+            
         }
 
         if (Time.time > _canFire)
         {
             _fireRate = Random.Range(3.0f, 8.0f);
             _canFire = Time.time + _fireRate;
-            GameObject EnemyLaser = Instantiate(_enemyAngularPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
+            GameObject EnemyLaser = Instantiate(_BigGreenEnemyLaserPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
             Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
 
             for (int i = 0; i < enemyLaserChild.Length; i++)
@@ -123,7 +114,7 @@ public class Enemy : MonoBehaviour
     {
              
             Vector3 newRotationAngles = transform.rotation.eulerAngles;
-            //Debug.Log(newRotationAngles);
+            
             newRotationAngles.z -= 1;
             yield return new WaitForSeconds(0.1f);
             transform.rotation = Quaternion.Euler(newRotationAngles);
@@ -134,7 +125,7 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.Euler(newRotationAngles);
             }
               
-    }
+    }*/
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -166,12 +157,7 @@ public class Enemy : MonoBehaviour
     public void _TriggerAnimation()
     {
         _explosion.SetTrigger("OnEnemyDeath");
-        if(_enemyType == 0)
-        {
-            _speed = 4.0f;
-        }
-        else
-        _speed = 0.0f;
+        _speed = 4.0f;
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         Destroy(this.gameObject, 1.5f);
 

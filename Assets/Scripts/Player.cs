@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
+
     /*//UI manager variable
     [SerializeField]
     private Image[] _livesImage;*/
@@ -356,9 +357,9 @@ public class Player : MonoBehaviour
 
     public void RefillAmmo()
     {
-        _totalLaserFired = 0;                                                //resets lase fire to 0.
-        AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 1, 1, 1);   //resets the prefab color to its original.
-        _noAmmoText.GetComponent<Text>().enabled = false;                    // disables no ammo text in UI.
+        _totalLaserFired = 0;                                                          //resets lase fire to 0.
+        AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 1, 1, 1);            //resets the prefab color to its original.
+        _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.          
     }
 
     public void HealthRefill()

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     private bool _isGameOver = false;
 
-   
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
@@ -25,7 +25,11 @@ public class GameManager : MonoBehaviour
     {
         _isGameOver = true;
     }
-    
-   
+
+    public void LoadNewGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
    
 }

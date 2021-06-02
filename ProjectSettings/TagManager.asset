@@ -13,6 +13,9 @@ TagManager:
   - Shield
   - Enemy Laser
   - GreenLaser
+  - Waypoint
+  - Undefined
+  - Big Green Enemy
   layers:
   - Default
   - TransparentFX
