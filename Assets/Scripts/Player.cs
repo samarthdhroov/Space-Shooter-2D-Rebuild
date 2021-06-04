@@ -82,6 +82,11 @@ public class Player : MonoBehaviour
     //Shake Animation variable
     private Animator _shakeCamera;
 
+    //Variables for LaserDamage
+    
+    [SerializeField]
+    private Text _laserShockText;
+    private bool LaserDamagerCollected = false;
 
 
     void Start()
@@ -91,6 +96,7 @@ public class Player : MonoBehaviour
         _UIManager = GameObject.Find("UI Manager").GetComponent<UI_Manager>();
         _laserAudio = GetComponent<AudioSource>();
         _shakeCamera = GameObject.Find("Main Camera").GetComponent<Animator>();
+        
        
 
         if (_spawnManager == null)
@@ -103,7 +109,6 @@ public class Player : MonoBehaviour
             Debug.LogError("Null UI Manager.");
         }
 
-        
     }
 
 
@@ -205,35 +210,38 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canfire)
         {
-            if (_totalLaserFired < 15)
+            if(LaserDamagerCollected == false)
             {
-                _totalLaserFired++;
-                _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.
-                _canfire = Time.time + _fireRate;
-                if (_tripleShotActive == true)
+            
+                if (_totalLaserFired < 15)
                 {
-                    Instantiate(_tripleShot, transform.position, Quaternion.identity);
-                }
-                else if(_greenlaserActive == true)
-                {
-                    Instantiate(_secondLaserShot, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.AngleAxis(90.0f, Vector3.forward));
-                    StartCoroutine(GreenWiperEnable());
+                    _totalLaserFired++;
+                    _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.
+                    _canfire = Time.time + _fireRate;
+                    if (_tripleShotActive == true)
+                    {
+                        Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                    }
+                    else if(_greenlaserActive == true)
+                    {
+                        Instantiate(_secondLaserShot, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.AngleAxis(90.0f, Vector3.forward));
+                        StartCoroutine(GreenWiperEnable());
+                    }
+                    else
+                    {
+                        Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                    
+                    }
+                    _laserAudio.Play();
                 }
                 else
                 {
-                    Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-                    
+                    AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
+                    _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
+                    _noAmmoText.GetComponent<Text>().text = "No Ammo";                 // Changes the text to No Ammo.
+
                 }
-                _laserAudio.Play();
             }
-            else
-            {
-                AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
-                _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
-                _noAmmoText.GetComponent<Text>().text = "No Ammo";                 // Changes the text to No Ammo.
-
-            }
-
         }
     }
 
@@ -406,4 +414,26 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    public void LaserDamagerPicked()
+    {
+        LaserDamagerCollected = true;   //This stops update method from starting the fire laser method.
+
+        StartCoroutine(FireDisable());
+    }
+        
+    IEnumerator FireDisable()
+    {
+        _laserShockText.enabled = true;
+        int Counter = 5;
+        while(Counter != 0)
+        {
+            
+            _laserShockText.text = "Engine Shock. Hold for " + Counter.ToString();
+            Counter--;
+            yield return new WaitForSeconds(1.0f);
+        }
+        _laserShockText.enabled = false;
+        LaserDamagerCollected = false; //This returns the control back to spacebar by allowing update method to call the fire method. 
+    }
 }

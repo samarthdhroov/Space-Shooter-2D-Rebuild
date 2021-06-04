@@ -59,6 +59,9 @@ public class Powerup : MonoBehaviour
                 case 5:
                     player.GreenWiper();
                     break;
+                case 6:
+                    player.LaserDamagerPicked();
+                    break;
                 default:
                     Debug.Log("Default Value");
                     break;

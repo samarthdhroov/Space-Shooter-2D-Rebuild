@@ -23,6 +23,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _greenWiperPower;
     [SerializeField]
+    private GameObject _LaserDamager;
+
+    [SerializeField]
     private Text _WaveText;
     [SerializeField]
     private UI_Manager uI_Manager;
@@ -125,7 +128,7 @@ public class SpawnManager : MonoBehaviour
             while (_stopSpawn == false)
             {
                 Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
-                int powerupId = Random.Range(0, 5);
+                int powerupId = Random.Range(0, 6);
                 Instantiate(powerup[powerupId], location, Quaternion.identity);
                 yield return new WaitForSeconds(Random.Range(3, 8));
             }

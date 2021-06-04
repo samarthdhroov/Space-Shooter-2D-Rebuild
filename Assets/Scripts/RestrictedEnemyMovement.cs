@@ -59,7 +59,6 @@ public class RestrictedEnemyMovement : MonoBehaviour
         }
 
 
-
     }
 
     private void Update()
