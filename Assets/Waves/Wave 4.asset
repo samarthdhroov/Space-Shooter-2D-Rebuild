@@ -15,5 +15,6 @@ MonoBehaviour:
   enemy:
   - {fileID: 603279392992875513, guid: 99304ac9b399aee4a8cfe7b43196c40a, type: 3}
   - {fileID: 4511145014321474213, guid: 6c153cd988254ef4898cbb929ecdc3df, type: 3}
+  - {fileID: 5153215154656004640, guid: 8568fd3b8187d59449cca97b99126a45, type: 3}
   enemyCount: 8
   speed: 8

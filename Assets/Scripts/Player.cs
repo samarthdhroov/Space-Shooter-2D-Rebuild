@@ -289,6 +289,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int getPlayerLives()
+    {
+        return _lives;
+    }
+
     public void isTripleShotActive()
     {
         _tripleShotActive = true;

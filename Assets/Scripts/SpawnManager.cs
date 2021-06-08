@@ -6,122 +6,134 @@ using UnityEngine.UI;
 public class SpawnManager : MonoBehaviour
 {
 
-    [SerializeField]
-    private GameObject _enemyPrefab;
-    [SerializeField]
-    private GameObject _bigGreenEnemyPrefab;
-    [SerializeField]
-    private GameObject _enemyContainer;
-    [SerializeField]
-    private GameObject _tripleShotPrefab;
-    [SerializeField]
-    private GameObject _speedShotPrefab;
-    [SerializeField]
-    private GameObject _powerupPrefab;
-    [SerializeField]
-    private GameObject _healthPowerUp;
-    [SerializeField]
-    private GameObject _greenWiperPower;
-    [SerializeField]
-    private GameObject _LaserDamager;
+        [SerializeField]
+        private GameObject _enemyPrefab;
+        [SerializeField]
+        private GameObject _bigGreenEnemyPrefab;
+        [SerializeField]
+        private GameObject _enemyContainer;
+        [SerializeField]
+        private GameObject _tripleShotPrefab;
+        [SerializeField]
+        private GameObject _speedShotPrefab;
+        [SerializeField]
+        private GameObject _powerupPrefab;
+        [SerializeField]
+        private GameObject _healthPowerUp;
+        [SerializeField]
+        private GameObject _greenWiperPower;
+        [SerializeField]
+        private GameObject _LaserDamager;
 
-    [SerializeField]
-    private Text _WaveText;
-    [SerializeField]
-    private UI_Manager uI_Manager;
+        [SerializeField]
+        private Text _WaveText;
+        [SerializeField]
+        private UI_Manager uI_Manager;
 
-    [SerializeField]
-    private GameObject[] powerup;
+        [SerializeField]
+        private GameObject[] powerup;
 
-    [SerializeField]
-    private GameObject gameManager;
+        [SerializeField]
+        private GameObject gameManager;
 
 
-    private bool _stopSpawn = false;
+        private bool _stopSpawn = false;
 
-    [SerializeField]
-    WaveSpawner[] waveSpawner;
-    int startingIndex = 0;
+        [SerializeField]
+        WaveSpawner[] waveSpawner;
+        int startingIndex = 0;
+
+        Player player;
+
+    private void Start()
+    {
+        player = GameObject.Find("Player").GetComponent<Player>();
+
+        if(player == null)
+        {
+            Debug.Log("Player is empty");
+        }
+    }
 
 
     public void powerUpCoroutineStarter()
-    {
-        StartCoroutine(startEnemyWaves());
-        StartCoroutine(PowerupRoutine()); 
-        StartCoroutine(SecondaryPowerUp());
-    }
-
-     IEnumerator startEnemyWaves()
-     {
-       while(_stopSpawn == false)
         {
-                for (int i = startingIndex; i < waveSpawner.Length; i++)
-                {
-              
-                   var currentWave = waveSpawner[startingIndex];
-                   if(_stopSpawn == false)
-                     {
-                       uI_Manager.showWaveText(startingIndex);
-                     }
-                    yield return StartCoroutine(EnemySpawnRoutine(currentWave));
-                
-                }
-        } 
-        
-     }
+            StartCoroutine(startEnemyWaves());
+            StartCoroutine(PowerupRoutine()); 
+            StartCoroutine(SecondaryPowerUp());
+        }
 
-    IEnumerator EnemySpawnRoutine(WaveSpawner waveConfig)
-    {
-        while (_stopSpawn == false)
-        {
-          
-            for (int i = 0; i < waveConfig.getEnemyCount(); i++)
+         IEnumerator startEnemyWaves()
+         {
+           while(_stopSpawn == false)
             {
+                    for (int i = startingIndex; i < waveSpawner.Length; i++)
+                    {
+              
+                       var currentWave = waveSpawner[startingIndex];
+                       if(_stopSpawn == false)
+                         {
+                           uI_Manager.showWaveText(startingIndex);
+                         }
+                        yield return StartCoroutine(EnemySpawnRoutine(currentWave));
+                
+                    }
+            } 
+        
+         }
+
+        IEnumerator EnemySpawnRoutine(WaveSpawner waveConfig)
+        {
+            while (_stopSpawn == false)
+            {
+          
+                for (int i = 0; i < waveConfig.getEnemyCount(); i++)
+                {
                
                 
-                 foreach (GameObject item in waveConfig.getEnemy())
-                 {
-                    if(_stopSpawn == false) 
-                    { 
+                     foreach (GameObject item in waveConfig.getEnemy())
+                     {
+                        if(_stopSpawn == false) 
+                        { 
 
-                        GameObject NewEnemy = Instantiate(item);
-                        NewEnemy.transform.parent = _enemyContainer.transform;
-                        if (item.tag == "Enemy")
-                        {
-                            NewEnemy.GetComponent<Enemy>().setEnemySpeed(waveConfig.EnemySpeed());
+                            GameObject NewEnemy = Instantiate(item);
+                            NewEnemy.transform.parent = _enemyContainer.transform;
+                            if (item.tag == "Enemy")
+                            {
+                                NewEnemy.GetComponent<Enemy>().setEnemySpeed(waveConfig.EnemySpeed());
+                            }
+                            else if (item.tag == "Big Green Enemy")
+                            {
+                                NewEnemy.GetComponent<RestrictedEnemyMovement>().SetEnemySpeed(waveConfig.EnemySpeed());
+                                Vector3 currentPosition = NewEnemy.transform.position;
+                            }
+                            yield return new WaitForSeconds(1.0f);
                         }
-                        else if (item.tag == "Big Green Enemy")
-                        {
-                            NewEnemy.GetComponent<RestrictedEnemyMovement>().SetEnemySpeed(waveConfig.EnemySpeed());
-                            Vector3 currentPosition = NewEnemy.transform.position;
-                        }
-                        yield return new WaitForSeconds(1.0f);
-                    }
-                 }
+                     }
                 
+                }
+                yield return new WaitForSeconds(5.0f);
+                break;
             }
-            yield return new WaitForSeconds(5.0f);
-            break;
-        }
-        startingIndex++;
+            startingIndex++;
 
-        if(startingIndex >= waveSpawner.Length)
-        {
-            _stopSpawn = true;
-            StartCoroutine(ExitPlan());
+            if(startingIndex >= waveSpawner.Length && player.getPlayerLives()>0)
+            {
+                _stopSpawn = true;
+                StartCoroutine(ExitPlan());
+            }
         }
-    }
 
        
 
-    IEnumerator ExitPlan()
-    {
-        _WaveText.enabled = true;
-        _WaveText.text = "You have won this bad looking game !";
-        yield return new WaitForSeconds(6.0f);
-        gameManager.GetComponent<GameManager>().LoadNewGame();
+        IEnumerator ExitPlan()
+        {
+            _WaveText.enabled = true;
+            _WaveText.text = "You have won this bad looking game !";
+            yield return new WaitForSeconds(6.0f);
+            gameManager.GetComponent<GameManager>().LoadNewGame();
 
-    }
+        }
 
         IEnumerator PowerupRoutine()
         {
@@ -152,15 +164,15 @@ public class SpawnManager : MonoBehaviour
 
         }
 
-    /* IEnumerator BigEnemySpawnRoutine()
-         {
-             while (_stopSpawn == false)
+        /* IEnumerator BigEnemySpawnRoutine()
              {
-                 GameObject NewEnemy = Instantiate(_bigGreenEnemyPrefab);
-                 NewEnemy.transform.parent = _enemyContainer.transform;
-                 yield return new WaitForSeconds(3.0f);
-             }
+                 while (_stopSpawn == false)
+                 {
+                     GameObject NewEnemy = Instantiate(_bigGreenEnemyPrefab);
+                     NewEnemy.transform.parent = _enemyContainer.transform;
+                     yield return new WaitForSeconds(3.0f);
+                 }
 
-         }*/
+             }*/
 
 }
