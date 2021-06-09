@@ -45,6 +45,8 @@ public class SpawnManager : MonoBehaviour
 
         Player player;
 
+        int instanceCounter = 0;
+
     private void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
@@ -87,17 +89,17 @@ public class SpawnManager : MonoBehaviour
         {
             while (_stopSpawn == false)
             {
-          
+
                 for (int i = 0; i < waveConfig.getEnemyCount(); i++)
                 {
-               
-                
-                     foreach (GameObject item in waveConfig.getEnemy())
-                     {
-                        if(_stopSpawn == false) 
-                        { 
 
+
+                    foreach (GameObject item in waveConfig.getEnemy())
+                    {
+                        if (_stopSpawn == false)
+                        {
                             GameObject NewEnemy = Instantiate(item);
+                            instanceCounter++;
                             NewEnemy.transform.parent = _enemyContainer.transform;
                             if (item.tag == "Enemy")
                             {
@@ -107,22 +109,23 @@ public class SpawnManager : MonoBehaviour
                             {
                                 NewEnemy.GetComponent<RestrictedEnemyMovement>().SetEnemySpeed(waveConfig.EnemySpeed());
                                 Vector3 currentPosition = NewEnemy.transform.position;
+                                NewEnemy.GetComponent<RestrictedEnemyMovement>().getInstancesNumber(instanceCounter);
                             }
-                            yield return new WaitForSeconds(1.0f);
-                        }
-                     }
-                
-                }
-                yield return new WaitForSeconds(5.0f);
-                break;
-            }
-            startingIndex++;
 
-            if(startingIndex >= waveSpawner.Length && player.getPlayerLives()>0)
-            {
-                _stopSpawn = true;
-                StartCoroutine(ExitPlan());
+                        }
+                        yield return new WaitForSeconds(1.0f);
+                    }
+                }
+                    yield return new WaitForSeconds(5.0f);
+                    break;
             }
+                startingIndex++;
+
+                if(startingIndex >= waveSpawner.Length && player.getPlayerLives()>0)
+                {
+                    _stopSpawn = true;
+                    StartCoroutine(ExitPlan());
+                }
         }
 
        
@@ -195,10 +198,9 @@ public class SpawnManager : MonoBehaviour
                 Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
                 choosePowerUp();
                 Instantiate(powerup[powerupId], location, Quaternion.identity);
-                Debug.Log(powerupId);
                 yield return new WaitForSeconds(3);
+            }
         }
-    }
 
  
         IEnumerator SecondaryPowerUp()

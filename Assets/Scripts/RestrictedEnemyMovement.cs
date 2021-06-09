@@ -32,6 +32,10 @@ public class RestrictedEnemyMovement : MonoBehaviour
     [SerializeField]
     private Vector3 exitPoint;
 
+    private bool shieldActive = false;
+
+    
+
     private void Start()
     {
         transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
@@ -115,24 +119,49 @@ public class RestrictedEnemyMovement : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            Destroy(this.gameObject);
+            if (shieldActive == true)
+            {
+                shieldActive = false;
+                transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
             player.damage();
         }
 
         if(collision.tag == "Laser")
         {
             Destroy(collision.gameObject);
-            player.AddScore(15);
-            _TriggerAnimation();
-            _explosionAudio.Play();
+
+            if(shieldActive == true)
+            {
+                shieldActive = false;
+                transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                player.AddScore(15);
+                _TriggerAnimation();
+                _explosionAudio.Play();
+            }
+            
 
         }
         if (collision.tag == "GreenLaser")
         {
-
-            player.AddScore(10);
-            _TriggerAnimation();
-            _explosionAudio.Play();
+            if (shieldActive == true)
+            {
+                shieldActive = false;
+                transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                player.AddScore(10);
+                _TriggerAnimation();
+                _explosionAudio.Play();
+            }
 
         }
 
@@ -171,4 +200,13 @@ public class RestrictedEnemyMovement : MonoBehaviour
         
     }
 
+  
+    public void getInstancesNumber(int value)
+    {
+        if(value%2 != 0)
+        {
+            shieldActive = true;
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+    }
 }
