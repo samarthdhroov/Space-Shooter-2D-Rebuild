@@ -32,16 +32,16 @@ public class SpawnManager : MonoBehaviour
 
         [SerializeField]
         private GameObject[] powerup;
-
+    
         [SerializeField]
         private GameObject gameManager;
-
+        int powerupId;
 
         private bool _stopSpawn = false;
 
         [SerializeField]
         WaveSpawner[] waveSpawner;
-        int startingIndex = 0;
+        int startingIndex = 1;
 
         Player player;
 
@@ -53,6 +53,7 @@ public class SpawnManager : MonoBehaviour
         {
             Debug.Log("Player is empty");
         }
+
     }
 
 
@@ -135,18 +136,71 @@ public class SpawnManager : MonoBehaviour
 
         }
 
+
+    void choosePowerUp()
+    {
+
+        int _weightedTotal = 0;
+
+        int[] powerupTable =
+        {
+            40,
+            25,
+            15,
+            10,
+            6,
+            4
+
+        };
+
+        int[] poweruptostart =
+        {
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+        };
+
+        foreach(int item in powerupTable)
+        {
+            _weightedTotal += item;
+        }
+
+        int randomNumber = Random.Range(0, _weightedTotal);
+
+        int i = 0;
+
+        foreach(int weight in powerupTable)
+        {
+            if(randomNumber <= weight)
+            {
+                powerupId = poweruptostart[i];
+                return;
+                
+            }
+            else
+            {
+                i++;
+                randomNumber -= weight;
+            }
+        }
+    }
+
         IEnumerator PowerupRoutine()
         {
             while (_stopSpawn == false)
             {
                 Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
-                int powerupId = Random.Range(0, 6);
+                choosePowerUp();
                 Instantiate(powerup[powerupId], location, Quaternion.identity);
-                yield return new WaitForSeconds(Random.Range(3, 8));
-            }
-
+                Debug.Log(powerupId);
+                yield return new WaitForSeconds(3);
         }
+    }
 
+ 
         IEnumerator SecondaryPowerUp()
         {
             while (_stopSpawn == false)
@@ -163,16 +217,5 @@ public class SpawnManager : MonoBehaviour
             _stopSpawn = true;
 
         }
-
-        /* IEnumerator BigEnemySpawnRoutine()
-             {
-                 while (_stopSpawn == false)
-                 {
-                     GameObject NewEnemy = Instantiate(_bigGreenEnemyPrefab);
-                     NewEnemy.transform.parent = _enemyContainer.transform;
-                     yield return new WaitForSeconds(3.0f);
-                 }
-
-             }*/
 
 }
