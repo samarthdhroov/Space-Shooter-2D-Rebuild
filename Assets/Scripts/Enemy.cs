@@ -19,8 +19,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _enemyLaserPrefab;
 
-    
 
+    private bool _hasAgression = false;
+    private bool _hasAgressionEnabled = false;
+    [SerializeField]
+    private int _aggressionWeight = 20;
 
     private void Start()
     {
@@ -47,11 +50,23 @@ public class Enemy : MonoBehaviour
 
         transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
 
+        float weightRequired = Random.Range(0, 101);
+        //Debug.Log("Random Weight Required: " + weightRequired);
+        if (_aggressionWeight >= weightRequired)
+        {
+            _hasAgression = true;
+        }
+        else
+        {
+            _hasAgression = false;
+        }
+
     }
 
     private void Update()
     {
         EnemyMovement();
+       
 
     }
 
@@ -62,8 +77,14 @@ public class Enemy : MonoBehaviour
 
     public void EnemyMovement()
     {
-     
+        if (_hasAgressionEnabled == true && player != null)
+        {
+            rammybehavior();
+        }
+
+
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        
 
         if (transform.position.y < -5.3f)
         {
@@ -129,6 +150,30 @@ public class Enemy : MonoBehaviour
               
     }*/
 
+    void rammybehavior()
+    {
+
+        float xValue;
+        float distance1 = Vector3.Distance(new Vector3(transform.position.x + 1.0f, transform.position.y , transform.position.z), player.transform.position);
+        float distance2 = Vector3.Distance(new Vector3(transform.position.x - 1.0f, transform.position.y , transform.position.z), player.transform.position);
+        if (distance1 < distance2)
+        {
+            xValue = 0.2f;
+        }
+        else if (distance1 > distance2)
+        {
+            xValue = -0.2f;
+        }
+        else
+        {
+            xValue = 0f;
+        }
+
+        Vector3 movement = new Vector3(xValue, -1, 0);
+        transform.Translate(movement * _speed * Time.deltaTime);
+
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -154,6 +199,19 @@ public class Enemy : MonoBehaviour
             _explosionAudio.Play();
 
         }
+
+        if(other.tag == "PlayerPresenceBox")
+        {
+            if (_hasAgression==true)
+            {
+                _hasAgressionEnabled = true;
+            }
+
+            if(_hasAgression == false)
+            {
+                _hasAgressionEnabled = false;
+            }
+        }
     }
 
     public void _TriggerAnimation()
@@ -165,4 +223,6 @@ public class Enemy : MonoBehaviour
 
     }
 
+
+   
 }

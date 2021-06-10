@@ -34,8 +34,8 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
     private bool shieldActive = false;
 
-    
 
+   
     private void Start()
     {
         transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
@@ -70,7 +70,7 @@ public class RestrictedEnemyMovement : MonoBehaviour
        
             Move();
 
-            if (Time.time > _canFire)
+        if (Time.time > _canFire)
             {
                 _fireRate = Random.Range(3.0f, 5.0f);
                 _canFire = Time.time + _fireRate;
@@ -81,6 +81,7 @@ public class RestrictedEnemyMovement : MonoBehaviour
                 {
                     enemyLaserChild[i].SetEnemyLaser();
                 }
+               
             }
 
         
@@ -180,11 +181,10 @@ public class RestrictedEnemyMovement : MonoBehaviour
     public void ExitMethod()
     {
         float outSpeed = 0.1f;
-
-        if(transform.position.x >0 && transform.position.x < 12)
+        if (transform.position.x >0 && transform.position.x < 12)
         {
             transform.Translate(Vector3.right * outSpeed );
-            if(transform.position.x >= 12)
+            if (transform.position.x >= 12)
             {
                 Destroy(this.gameObject);
             }
@@ -209,4 +209,6 @@ public class RestrictedEnemyMovement : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(true);
         }
     }
+
+   
 }

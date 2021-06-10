@@ -76,6 +76,7 @@ public class UI_Manager : MonoBehaviour
 
     void GameoverSequence()
     {
+        _waveText.enabled = false; 
         _GameoverText.gameObject.SetActive(true);
         StartCoroutine(flickerText());
         _restartText.gameObject.SetActive(true);
