@@ -67,26 +67,28 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
     private void Update()
     {
-       
-            Move();
-
-        if (Time.time > _canFire)
-            {
-                _fireRate = Random.Range(3.0f, 5.0f);
-                _canFire = Time.time + _fireRate;
-                GameObject EnemyLaser = Instantiate(_greenEnemyLaser, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
-                Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
-
-                for (int i = 0; i < enemyLaserChild.Length; i++)
-                {
-                    enemyLaserChild[i].SetEnemyLaser();
-                }
-               
-            }
-
-        
+        Move();
+        fireLaser();
     }
 
+
+    void fireLaser()
+    {
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3.0f, 5.0f);
+            _canFire = Time.time + _fireRate;
+            GameObject EnemyLaser = Instantiate(_greenEnemyLaser, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
+            Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < enemyLaserChild.Length; i++)
+            {
+                enemyLaserChild[i].SetEnemyLaser();
+            }
+
+        }
+
+    }
     public void SetEnemySpeed(float value)
     {
         moveSpeed = value;
@@ -166,6 +168,12 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
         }
 
+        if(collision.tag == "PowerupForPlayer" && collision.transform.position.y < transform.position.y) 
+        {
+            _canFire = -1f;
+            fireLaser();
+        }
+
     }
 
     public void _TriggerAnimation()
@@ -209,6 +217,5 @@ public class RestrictedEnemyMovement : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(true);
         }
     }
-
-   
+    
 }
