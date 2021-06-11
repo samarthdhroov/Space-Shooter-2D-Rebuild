@@ -19,6 +19,7 @@ TagManager:
   - Ufo
   - PlayerPresenceBox
   - Rotating Enemy
+  - PowerupForPlayer
   layers:
   - Default
   - TransparentFX

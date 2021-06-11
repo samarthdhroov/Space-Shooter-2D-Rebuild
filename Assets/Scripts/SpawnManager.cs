@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
 
         [SerializeField]
         WaveSpawner[] waveSpawner;
-        int startingIndex = 0;
+        int startingIndex = 1;
 
         Player player;
 

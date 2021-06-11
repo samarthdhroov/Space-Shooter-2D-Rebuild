@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
-    private float _speed = 3.0f;
+    public float _speed = 3.0f;
     private Player player;
     [SerializeField]
     private int _powerupId;
@@ -75,5 +75,10 @@ public class Powerup : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void MoveTowardsPlayer()
+    {
+        transform.position = Vector3.Lerp(transform.position, player.transform.position, 0.5f * Time.deltaTime);
     }
 }
