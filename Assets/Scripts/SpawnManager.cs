@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
 
         [SerializeField]
         WaveSpawner[] waveSpawner;
-        int startingIndex = 1;
+        int startingIndex = 0;
 
         Player player;
 
@@ -111,8 +111,10 @@ public class SpawnManager : MonoBehaviour
                                 Vector3 currentPosition = NewEnemy.transform.position;
                                 NewEnemy.GetComponent<RestrictedEnemyMovement>().getInstancesNumber(instanceCounter);
                             }
-
-                        }
+                            else if(item.tag == "Rotating Enemy")
+                            {
+                                NewEnemy.GetComponent<RotatingEnemyScript>().SetEnemySpeed(waveConfig.EnemySpeed());                        }
+                            }
                         yield return new WaitForSeconds(1.0f);
                     }
                 }

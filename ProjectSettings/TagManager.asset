@@ -18,6 +18,7 @@ TagManager:
   - Big Green Enemy
   - Ufo
   - PlayerPresenceBox
+  - Rotating Enemy
   layers:
   - Default
   - TransparentFX
