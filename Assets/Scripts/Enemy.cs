@@ -66,6 +66,7 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         EnemyMovement();
+        //detectPlayerLaser();
        
 
     }
@@ -212,6 +213,7 @@ public class Enemy : MonoBehaviour
                 _hasAgressionEnabled = false;
             }
         }
+        
     }
 
     public void _TriggerAnimation()
@@ -223,6 +225,8 @@ public class Enemy : MonoBehaviour
 
     }
 
-
-   
+    public void dodge(float value)
+    {
+        transform.position = new Vector3(transform.position.x + value, transform.position.y, 0);
+    }
 }

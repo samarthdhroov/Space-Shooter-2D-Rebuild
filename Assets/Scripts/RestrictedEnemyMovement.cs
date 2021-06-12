@@ -110,7 +110,7 @@ public class RestrictedEnemyMovement : MonoBehaviour
             SetTargetPosition();
 
         ExitTimeRemaining -= Time.deltaTime;
-        Debug.Log(ExitTimeRemaining);
+
 
         if(ExitTimeRemaining < 1.0f)
         {

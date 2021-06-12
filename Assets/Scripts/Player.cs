@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
     private bool LaserDamagerCollected = false;
 
 
+
     void Start()
     {
         transform.position = new Vector3(0, -2.94f, 0);
@@ -245,6 +246,7 @@ public class Player : MonoBehaviour
         }
     }
 
+   
     
 
     public void damage()

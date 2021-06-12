@@ -20,6 +20,7 @@ TagManager:
   - PlayerPresenceBox
   - Rotating Enemy
   - PowerupForPlayer
+  - EnemyLaserDetector
   layers:
   - Default
   - TransparentFX
