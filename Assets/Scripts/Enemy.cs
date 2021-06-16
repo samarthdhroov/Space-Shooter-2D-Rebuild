@@ -51,7 +51,6 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
 
         float weightRequired = Random.Range(0, 101);
-        //Debug.Log("Random Weight Required: " + weightRequired);
         if (_aggressionWeight >= weightRequired)
         {
             _hasAgression = true;
@@ -66,9 +65,6 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         EnemyMovement();
-        //detectPlayerLaser();
-       
-
     }
 
     public void setEnemySpeed(float value)
@@ -213,8 +209,27 @@ public class Enemy : MonoBehaviour
                 _hasAgressionEnabled = false;
             }
         }
-        
+
+        if (other.tag == "Missile")
+        {
+            try
+            {
+                player.AddScore(10);
+                _TriggerAnimation();
+                _explosionAudio.Play();
+            }
+            catch
+            {
+                player = FindObjectOfType<Player>();
+                player.AddScore(10);
+                _TriggerAnimation();
+                _explosionAudio.Play();
+            }
+
+        }
     }
+
+   
 
     public void _TriggerAnimation()
     {

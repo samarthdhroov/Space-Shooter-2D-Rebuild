@@ -88,6 +88,12 @@ public class Player : MonoBehaviour
     private Text _laserShockText;
     private bool LaserDamagerCollected = false;
 
+    //Homming Missile Prefab
+    [SerializeField]
+    private GameObject missile;
+    private int missileCount = 0;
+    private bool missileFireEnabled = false;
+   
 
 
     void Start()
@@ -115,12 +121,17 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
         Translate();
         Movement();
         LeftShiftSpeedThrust();
-        FireLaser();
-       
+        if(missileFireEnabled == true)
+        {
+            FireLaser(1);
+        }
+        else
+        {
+            FireLaser(0);
+        }
     }
 
     void Movement()
@@ -207,47 +218,67 @@ public class Player : MonoBehaviour
     }
 
 
-    void FireLaser()
+    void FireLaser(int type)
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canfire)
+        switch (type)
         {
-            if(LaserDamagerCollected == false)
-            {
-            
-                if (_totalLaserFired < 15)
+            case 0:
+                if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canfire)
                 {
-                    _totalLaserFired++;
-                    _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.
-                    _canfire = Time.time + _fireRate;
-                    if (_tripleShotActive == true)
+                    if (LaserDamagerCollected == false)
                     {
-                        Instantiate(_tripleShot, transform.position, Quaternion.identity);
-                    }
-                    else if(_greenlaserActive == true)
-                    {
-                        Instantiate(_secondLaserShot, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.AngleAxis(90.0f, Vector3.forward));
-                        StartCoroutine(GreenWiperEnable());
-                    }
-                    else
-                    {
-                        Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-                    
-                    }
-                    _laserAudio.Play();
-                }
-                else
-                {
-                    AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
-                    _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
-                    _noAmmoText.GetComponent<Text>().text = "No Ammo";                 // Changes the text to No Ammo.
 
+                        if (_totalLaserFired < 15)
+                        {
+                            _totalLaserFired++;
+                            _noAmmoText.GetComponent<Text>().text = _totalLaserFired.ToString() + "/15"; // Updates text to current count of fired lasers.
+                            _canfire = Time.time + _fireRate;
+                            if (_tripleShotActive == true)
+                            {
+                                Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                            }
+                            else if (_greenlaserActive == true)
+                            {
+                                Instantiate(_secondLaserShot, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.AngleAxis(90.0f, Vector3.forward));
+                                StartCoroutine(GreenWiperEnable());
+                            }
+                            else
+                            {
+                                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+
+                            }
+                            _laserAudio.Play();
+                        }
+                        else
+                        {
+                            AmmoPrefab.GetComponent<RawImage>().color = new Color(1, 0, 0, 1); // Changes the ammo image color to red.
+                            _laserAudio.Stop();                                                // Stops the laser fire sound since we have run out of ammo.
+                            _noAmmoText.GetComponent<Text>().text = "No Ammo";                 // Changes the text to No Ammo.
+
+                        }
+                    }
                 }
-            }
+                break;
+            case 1:
+                if (missileFireEnabled == true && Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (missileCount < 3)
+                    {
+                        GameObject FiredMissile = Instantiate(missile, transform.position, Quaternion.identity);
+                        missileCount++;
+                    }
+
+                    if (missileCount == 3)
+                    {
+                        missileFireEnabled = false;
+                    }
+                }
+                break;
+                
         }
+     
+        
     }
-
-   
-    
 
     public void damage()
     {
@@ -443,4 +474,18 @@ public class Player : MonoBehaviour
         _laserShockText.enabled = false;
         LaserDamagerCollected = false; //This returns the control back to spacebar by allowing update method to call the fire method. 
     }
+
+    public void FireMissile()
+    {
+        missileFireEnabled = true;
+        StartCoroutine(StopMissileFire());
+    }
+
+    IEnumerator StopMissileFire()
+    {
+        yield return new WaitForSeconds(5.0f);
+        missileFireEnabled = false;
+        missileCount = 0;      //This has to be reset because the fire method updates it to 3 and it does not go back to 0 automatically.
+    }
+    
 }

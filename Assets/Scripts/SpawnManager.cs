@@ -24,7 +24,8 @@ public class SpawnManager : MonoBehaviour
         private GameObject _greenWiperPower;
         [SerializeField]
         private GameObject _LaserDamager;
-
+        [SerializeField]
+        private GameObject _HommingMissilePowerUp;
         [SerializeField]
         private Text _WaveText;
         [SerializeField]
@@ -149,13 +150,13 @@ public class SpawnManager : MonoBehaviour
 
         int[] powerupTable =
         {
-            40,
+            30,
             25,
             15,
             10,
+            8,
             6,
-            4
-
+            3
         };
 
         int[] poweruptostart =
@@ -165,7 +166,8 @@ public class SpawnManager : MonoBehaviour
             2,
             3,
             4,
-            5
+            5,
+            6
         };
 
         foreach(int item in powerupTable)

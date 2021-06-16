@@ -21,6 +21,7 @@ TagManager:
   - Rotating Enemy
   - PowerupForPlayer
   - EnemyLaserDetector
+  - Missile
   layers:
   - Default
   - TransparentFX

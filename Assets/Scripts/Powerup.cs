@@ -62,6 +62,9 @@ public class Powerup : MonoBehaviour
                 case 6:
                     player.LaserDamagerPicked();
                     break;
+                case 7:
+                    player.FireMissile();
+                    break;
                 default:
                     Debug.Log("Default Value");
                     break;
