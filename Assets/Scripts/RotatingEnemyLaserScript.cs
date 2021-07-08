@@ -5,8 +5,9 @@ using UnityEngine;
 public class RotatingEnemyLaserScript : MonoBehaviour
 {
 
-    float _speed = 7.5f;
+    float _speed = 10.5f;
     int _dir = -1;
+    
 
     // Update is called once per frame
     void Update()

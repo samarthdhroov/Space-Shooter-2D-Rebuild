@@ -25,10 +25,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int _aggressionWeight = 20;
 
+    private bool iamAlive = true;
+
     private void Start()
     {
        
          player = GameObject.Find("Player").GetComponent<Player>();
+
          if (player == null)
             {
                 Debug.LogError("Player componenet is NUll");
@@ -103,49 +106,6 @@ public class Enemy : MonoBehaviour
     }
 }
     
-   /* public  void AngularEnemyMovement()
-    {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        StartCoroutine(ForwardAngleChange());
-
-        if (transform.position.y < -5.3f)
-        {
-            Destroy(this.gameObject);
-            
-        }
-
-        if (Time.time > _canFire)
-        {
-            _fireRate = Random.Range(3.0f, 8.0f);
-            _canFire = Time.time + _fireRate;
-            GameObject EnemyLaser = Instantiate(_BigGreenEnemyLaserPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
-            Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
-
-            for (int i = 0; i < enemyLaserChild.Length; i++)
-            {
-                enemyLaserChild[i].SetEnemyLaser();
-            }
-            
-        }
-        
-    }
-
-    IEnumerator ForwardAngleChange()
-    {
-             
-            Vector3 newRotationAngles = transform.rotation.eulerAngles;
-            
-            newRotationAngles.z -= 1;
-            yield return new WaitForSeconds(0.1f);
-            transform.rotation = Quaternion.Euler(newRotationAngles);
-
-            if (transform.position.y >=0 && transform.position.y <=1)
-            {
-            newRotationAngles.z = -45.0f;
-            transform.rotation = Quaternion.Euler(newRotationAngles);
-            }
-              
-    }*/
 
     void rammybehavior()
     {
@@ -229,10 +189,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-   
 
     public void _TriggerAnimation()
     {
+        iamAlive = false;
         _explosion.SetTrigger("OnEnemyDeath");
         _speed = 4.0f;
         this.gameObject.GetComponent<Collider2D>().enabled = false;
@@ -244,4 +204,56 @@ public class Enemy : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x + value, transform.position.y, 0);
     }
+
+    public bool IamAlive()
+    {
+        return iamAlive;
+    }
 }
+
+
+//When you decide to make an angular movement, check out the code below. 
+
+/* public  void AngularEnemyMovement()
+   {
+       transform.Translate(Vector3.down * _speed * Time.deltaTime);
+       StartCoroutine(ForwardAngleChange());
+
+       if (transform.position.y < -5.3f)
+       {
+           Destroy(this.gameObject);
+
+       }
+
+       if (Time.time > _canFire)
+       {
+           _fireRate = Random.Range(3.0f, 8.0f);
+           _canFire = Time.time + _fireRate;
+           GameObject EnemyLaser = Instantiate(_BigGreenEnemyLaserPrefab, transform.position, Quaternion.identity); //We are first getting hold of the prefab and then extracting its children. 
+           Laser[] enemyLaserChild = EnemyLaser.GetComponentsInChildren<Laser>();
+
+           for (int i = 0; i < enemyLaserChild.Length; i++)
+           {
+               enemyLaserChild[i].SetEnemyLaser();
+           }
+
+       }
+
+   }
+
+   IEnumerator ForwardAngleChange()
+   {
+
+           Vector3 newRotationAngles = transform.rotation.eulerAngles;
+
+           newRotationAngles.z -= 1;
+           yield return new WaitForSeconds(0.1f);
+           transform.rotation = Quaternion.Euler(newRotationAngles);
+
+           if (transform.position.y >=0 && transform.position.y <=1)
+           {
+           newRotationAngles.z = -45.0f;
+           transform.rotation = Quaternion.Euler(newRotationAngles);
+           }
+
+   }*/

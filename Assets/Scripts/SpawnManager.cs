@@ -27,6 +27,8 @@ public class SpawnManager : MonoBehaviour
         [SerializeField]
         private GameObject _HommingMissilePowerUp;
         [SerializeField]
+        private GameObject _heatPowerUp;
+        [SerializeField]
         private Text _WaveText;
         [SerializeField]
         private UI_Manager uI_Manager;
@@ -44,9 +46,17 @@ public class SpawnManager : MonoBehaviour
         WaveSpawner[] waveSpawner;
         int startingIndex = 0;
 
+        float waveWaitingTimeFrame = 5.0f;
+
         Player player;
 
         int instanceCounter = 0;
+
+    [SerializeField]
+    ThrustSlider _bossHealthBar;
+
+    public bool BossMagnetActivated = false;
+
 
     private void Start()
     {
@@ -59,15 +69,22 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+  
+
 
     public void powerUpCoroutineStarter()
         {
             StartCoroutine(startEnemyWaves());
-            StartCoroutine(PowerupRoutine()); 
-            StartCoroutine(SecondaryPowerUp());
-        }
 
-         IEnumerator startEnemyWaves()
+        if (startingIndex == 5)
+            StartCoroutine(PowerupRoutine(1));
+        else
+            StartCoroutine(PowerupRoutine(3));
+
+            StartCoroutine(SecondaryPowerUp());
+    }
+
+    IEnumerator startEnemyWaves()
          {
            while(_stopSpawn == false)
             {
@@ -80,7 +97,6 @@ public class SpawnManager : MonoBehaviour
                            uI_Manager.showWaveText(startingIndex);
                          }
                         yield return StartCoroutine(EnemySpawnRoutine(currentWave));
-                
                     }
             } 
         
@@ -114,12 +130,19 @@ public class SpawnManager : MonoBehaviour
                             }
                             else if(item.tag == "Rotating Enemy")
                             {
-                                NewEnemy.GetComponent<RotatingEnemyScript>().SetEnemySpeed(waveConfig.EnemySpeed());                        }
+                                NewEnemy.GetComponent<RotatingEnemyScript>().SetEnemySpeed(waveConfig.EnemySpeed());                        
                             }
+                            else if(item.tag=="Boss Enemy")
+                            {
+                                uI_Manager.DisplayArrowAndText();
+                                yield return new WaitUntil(() => EnemyDead()); //I have understood this as in I did pass a method to the constructor of this method. To be digged more later on. 
+                                waveWaitingTimeFrame = 2.0f;    
+                            }
+                        }
                         yield return new WaitForSeconds(1.0f);
                     }
                 }
-                    yield return new WaitForSeconds(5.0f);
+                    yield return new WaitForSeconds(waveWaitingTimeFrame);
                     break;
             }
                 startingIndex++;
@@ -139,9 +162,17 @@ public class SpawnManager : MonoBehaviour
             _WaveText.text = "You have won this bad looking game !";
             yield return new WaitForSeconds(6.0f);
             gameManager.GetComponent<GameManager>().LoadNewGame();
-
         }
 
+    bool EnemyDead()
+    {
+        if (_bossHealthBar.GetComponent<ThrustSlider>().GetSliderValue() < 0.2f)
+            return true;
+        else
+            return false;
+    }
+
+    
 
     void choosePowerUp()
     {
@@ -195,14 +226,15 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-        IEnumerator PowerupRoutine()
+        IEnumerator PowerupRoutine(int value)
         {
+        int waitPeriod = value;
             while (_stopSpawn == false)
             {
                 Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
                 choosePowerUp();
                 Instantiate(powerup[powerupId], location, Quaternion.identity);
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(value);
             }
         }
 
@@ -223,5 +255,19 @@ public class SpawnManager : MonoBehaviour
             _stopSpawn = true;
 
         }
+
+
+   
+      public IEnumerator HeatPowerUp()
+    {
+        while (_stopSpawn == false && BossMagnetActivated == true)
+        {
+
+            Vector3 location = new Vector3(Random.Range(-9.61f, 9.61f), 7.6f, 0);
+            Instantiate(_heatPowerUp, location, Quaternion.identity);
+            yield return new WaitForSeconds(3.0f);
+        }
+    }
+      
 
 }

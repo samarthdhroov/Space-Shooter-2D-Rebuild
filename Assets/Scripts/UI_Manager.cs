@@ -24,9 +24,13 @@ public class UI_Manager : MonoBehaviour
     [SerializeField]
     private Text _restartText;
 
+    [SerializeField]
+    Image GlowingArrow;
+    [SerializeField]
+    Text BossDamageText;
+
     private GameManager _gameManager;
-
-
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -116,4 +120,19 @@ public class UI_Manager : MonoBehaviour
     {
         _waveText.text = "You Won this bad looking game";
     }
+
+    public void DisplayArrowAndText()
+    {
+        GlowingArrow.GetComponent<Image>().enabled = true;
+        BossDamageText.GetComponent<Text>().enabled = true;
+        StartCoroutine(CloseArrowAndText());
+    }
+
+    IEnumerator CloseArrowAndText()
+    {
+        yield return new WaitForSeconds(2.5f);
+        GlowingArrow.GetComponent<Image>().enabled = false;
+        BossDamageText.GetComponent<Text>().enabled = false;
+    }
+
 }

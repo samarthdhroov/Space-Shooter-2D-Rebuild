@@ -34,6 +34,8 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
     private bool shieldActive = false;
 
+    private bool iamactive = true;
+
 
    
     private void Start()
@@ -67,8 +69,11 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        Move();
-        fireLaser();
+        if(iamactive == true)
+        {
+            Move();
+            fireLaser();
+        }
     }
 
 
@@ -131,6 +136,7 @@ public class RestrictedEnemyMovement : MonoBehaviour
             else
             {
                 Destroy(this.gameObject);
+                iamactive = false;
             }
             player.damage();
         }
@@ -179,6 +185,7 @@ public class RestrictedEnemyMovement : MonoBehaviour
 
     public void _TriggerAnimation()
     {
+        iamactive = false;
         _explosion.SetTrigger("OnEnemyDeath");
         moveSpeed = 0;
         this.gameObject.GetComponent<Collider2D>().enabled = false;

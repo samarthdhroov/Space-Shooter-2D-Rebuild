@@ -93,6 +93,9 @@ public class Player : MonoBehaviour
     private GameObject missile;
     private int missileCount = 0;
     private bool missileFireEnabled = false;
+
+    [SerializeField]
+    GameObject FirePower;
    
 
 
@@ -487,5 +490,30 @@ public class Player : MonoBehaviour
         missileFireEnabled = false;
         missileCount = 0;      //This has to be reset because the fire method updates it to 3 and it does not go back to 0 automatically.
     }
-    
+
+    public void redLaserDamager()
+    {
+        StartCoroutine(laserRotator());
+
+    }
+
+    IEnumerator  laserRotator()
+    {
+        for (int i = 0; i <= 360; i = i+5) //Added 5 as a jump here to mimic speed. I have to find a better way to add a speed to the rotation. 
+        {
+            transform.rotation = Quaternion.Euler(0, 0, i);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void MoveTowardsBossMagnet(Transform magnetTransform)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, magnetTransform.position, Time.deltaTime * 2.5f);
+        
+    }
+
+    public void ShootFire() //Initiates fire power at player's location.
+    {
+        Instantiate(FirePower, transform.position,Quaternion.identity);
+    }
 }

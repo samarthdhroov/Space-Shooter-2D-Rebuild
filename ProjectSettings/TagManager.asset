@@ -22,6 +22,12 @@ TagManager:
   - PowerupForPlayer
   - EnemyLaserDetector
   - Missile
+  - Boss Laser
+  - Boss Enemy
+  - Boss Shield
+  - LocationPoints
+  - BossMagnet
+  - PlayerFire
   layers:
   - Default
   - TransparentFX

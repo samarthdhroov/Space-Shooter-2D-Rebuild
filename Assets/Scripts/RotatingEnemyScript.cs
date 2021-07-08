@@ -27,6 +27,8 @@ public class RotatingEnemyScript : MonoBehaviour
     private Animator _explosion;
     private AudioSource _explosionAudio;
 
+    private bool iAmAlive = true;
+
 
     void Start()
     {
@@ -103,7 +105,8 @@ public class RotatingEnemyScript : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        fireLaser();
+        if(iAmAlive == true)
+            fireLaser();
 
     }
 
@@ -174,6 +177,7 @@ public class RotatingEnemyScript : MonoBehaviour
         _explosion.SetTrigger("OnEnemyDeath");
         _speed = 3.0f;
         this.gameObject.GetComponent<Collider2D>().enabled = false;
+        iAmAlive = false;
         Destroy(this.gameObject, 1.5f);
 
     }

@@ -8,17 +8,56 @@ public class Missile : MonoBehaviour
     float _speed = 10.5f;
     Enemy[] allEnemies;
 
+    BossBehavior bossEnemy;
+
     
     private void Update()
     {
-        allEnemies = GameObject.FindObjectsOfType<Enemy>();
+        if(GameObject.FindGameObjectWithTag("Enemy") != null)
+        {
+            allEnemies = GameObject.FindObjectsOfType<Enemy>();
+        }
+        
+        if(GameObject.FindGameObjectWithTag("Boss Enemy") != null)
+        {
+            bossEnemy = GameObject.FindObjectOfType<BossBehavior>();
+        }
 
-        if(allEnemies == null)
+        if (allEnemies == null)
         {
             Debug.Log("NO ENEMIES ON SCREEN");
         }
 
-        MoveToEnemy(FindClosestEnemy());
+        if(bossEnemy == null)
+        {
+            Debug.Log("No boss found");
+        }
+
+        if(allEnemies != null)
+        {
+            foreach(Enemy item in allEnemies)
+            {
+                if(item.GetComponent<Enemy>().IamAlive() == true)
+                {
+                    MoveToEnemy(FindClosestEnemy());
+                }
+
+                if(item.GetComponent<Enemy>().IamAlive() == false)
+                {
+                    MoveOutOfScreen();
+                }
+            }
+            
+        }
+        else if(bossEnemy != null)
+        {
+            MoveTowardsBoss();  
+        }
+        else
+        {
+            MoveOutOfScreen();
+        }
+
 
         if(transform.position.y < -5.3f || transform.position.y >7.0f)
         {
@@ -62,12 +101,33 @@ public class Missile : MonoBehaviour
         return angle - 90;
     }
 
+    void MoveTowardsBoss()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, bossEnemy.transform.position, Time.deltaTime * _speed);
+        float angle = RotateTowardsEnemy(bossEnemy.transform);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Enemy")
         {
             Destroy(this.gameObject);
         }
+
+        if(collision.tag == "Boss Enemy")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
+    void MoveOutOfScreen()
+    {
+        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+
+        if(transform.position.y > 8.0f)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

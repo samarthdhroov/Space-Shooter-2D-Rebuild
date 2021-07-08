@@ -68,5 +68,10 @@ public class Laser : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+       if(collision.tag == "Boss Enemy")
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

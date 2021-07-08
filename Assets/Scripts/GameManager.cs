@@ -23,12 +23,12 @@ public class GameManager : MonoBehaviour
         if(Input.GetKey(KeyCode.C) && _isGameOver == false)
         {
             GameObject[] powerups = GameObject.FindGameObjectsWithTag("PowerupForPlayer");
+            
             foreach(GameObject item in powerups)
             {
-                item.GetComponent<Powerup>()._speed = 6.0f;
-                item.GetComponent<Powerup>().MoveTowardsPlayer();
+                    item.GetComponent<Powerup>()._speed = 6.0f;
+                    item.GetComponent<Powerup>().MoveTowardsPlayer();
             }
-           
         }
     }
 

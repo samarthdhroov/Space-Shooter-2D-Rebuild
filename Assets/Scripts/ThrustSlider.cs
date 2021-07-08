@@ -11,4 +11,9 @@ public class ThrustSlider : MonoBehaviour
     {
         slider.value = value;
     }
+
+    public float GetSliderValue()
+    {
+        return slider.value;
+    }
 }
